@@ -70,3 +70,7 @@ Segera ganti kredensial dan hash kata sandi pada `config.php` sebelum website di
 
 - Email: `dhandy.pf@gmail.com`
 - GitHub: [DhandyPF](https://github.com/DhandyPF)
+
+## Repository
+
+- [Repo](https://github.com/DhandyPF/Portfolio-Non-Framework)
