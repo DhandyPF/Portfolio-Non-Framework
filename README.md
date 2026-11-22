@@ -73,4 +73,4 @@ Segera ganti kredensial dan hash kata sandi pada `config.php` sebelum website di
 
 ## Repository
 
-- [Repo](https://github.com/DhandyPF/Portfolio-Non-Framework)
+- Repo: [Github](https://github.com/DhandyPF/Portfolio-Non-Framework)
