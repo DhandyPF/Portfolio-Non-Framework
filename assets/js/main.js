@@ -7,7 +7,8 @@ const themeToggle = document.querySelector(".theme-toggle");
 const colorSchemeMeta = document.querySelector('meta[name="color-scheme"]');
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
-const systemPrefersDark = () => window.matchMedia("(prefers-color-scheme: dark)").matches;
+const systemPrefersDark = () =>
+  window.matchMedia("(prefers-color-scheme: dark)").matches;
 
 const getRenderedTheme = () => {
   const storedTheme = colorSchemeMeta?.content;
@@ -67,7 +68,11 @@ themeToggle?.addEventListener("click", () => {
 
 window.addEventListener("storage", (event) => {
   if (event.key === "color-scheme") {
-    applyTheme(event.newValue === "light" || event.newValue === "dark" ? event.newValue : null);
+    applyTheme(
+      event.newValue === "light" || event.newValue === "dark"
+        ? event.newValue
+        : null,
+    );
   }
 });
 
@@ -96,8 +101,8 @@ document.addEventListener("keydown", (event) => {
 
 document.addEventListener("pointerdown", (event) => {
   if (
-    primaryNav?.classList.contains("is-open")
-    && !siteHeader?.contains(event.target)
+    primaryNav?.classList.contains("is-open") &&
+    !siteHeader?.contains(event.target)
   ) {
     primaryNav.classList.remove("is-open");
     menuToggle?.setAttribute("aria-expanded", "false");
@@ -141,9 +146,7 @@ const updateNavbarLayout = () => {
 
   siteHeader.classList.add("is-wide");
   const navShell = siteHeader.querySelector(".nav-shell");
-  const fits = navShell
-    ? navShell.scrollWidth <= navShell.clientWidth
-    : false;
+  const fits = navShell ? navShell.scrollWidth <= navShell.clientWidth : false;
 
   siteHeader.classList.toggle("is-wide", fits);
   if (!fits) {
@@ -202,15 +205,20 @@ if (certificateTrack && !reduceMotion.matches) {
       lastTime = time;
     }
 
-    if (!paused && certificateTrack.scrollWidth > certificateTrack.clientWidth) {
+    if (
+      !paused &&
+      certificateTrack.scrollWidth > certificateTrack.clientWidth
+    ) {
       if (!hasStarted) {
-        certificateTrack.scrollLeft = certificateTrack.scrollWidth - certificateTrack.clientWidth;
+        certificateTrack.scrollLeft =
+          certificateTrack.scrollWidth - certificateTrack.clientWidth;
         hasStarted = true;
       }
       const elapsed = Math.min(time - lastTime, 50);
       certificateTrack.scrollLeft -= elapsed * speed;
       if (certificateTrack.scrollLeft <= 0) {
-        certificateTrack.scrollLeft = certificateTrack.scrollWidth - certificateTrack.clientWidth;
+        certificateTrack.scrollLeft =
+          certificateTrack.scrollWidth - certificateTrack.clientWidth;
       }
     }
 
@@ -230,28 +238,40 @@ if (certificateTrack && !reduceMotion.matches) {
   certificateTrack.addEventListener("pointerleave", resumeCertificates);
   certificateTrack.addEventListener("focusin", pauseCertificates);
   certificateTrack.addEventListener("focusout", resumeCertificates);
-  certificateTrack.addEventListener("touchstart", pauseCertificates, { passive: true });
-  certificateTrack.addEventListener("touchend", resumeCertificates, { passive: true });
+  certificateTrack.addEventListener("touchstart", pauseCertificates, {
+    passive: true,
+  });
+  certificateTrack.addEventListener("touchend", resumeCertificates, {
+    passive: true,
+  });
   animationFrame = window.requestAnimationFrame(moveCertificates);
 
-  window.addEventListener("pagehide", () => {
-    window.cancelAnimationFrame(animationFrame);
-  }, { once: true });
+  window.addEventListener(
+    "pagehide",
+    () => {
+      window.cancelAnimationFrame(animationFrame);
+    },
+    { once: true },
+  );
 }
 
 // Tampilkan elemen dari arah yang sesuai dengan arah scroll.
 let lastScrollY = window.scrollY;
 let scrollDirection = "down";
 
-window.addEventListener("scroll", () => {
-  const currentScrollY = window.scrollY;
-  if (currentScrollY > lastScrollY) {
-    scrollDirection = "down";
-  } else if (currentScrollY < lastScrollY) {
-    scrollDirection = "up";
-  }
-  lastScrollY = currentScrollY;
-}, { passive: true });
+window.addEventListener(
+  "scroll",
+  () => {
+    const currentScrollY = window.scrollY;
+    if (currentScrollY > lastScrollY) {
+      scrollDirection = "down";
+    } else if (currentScrollY < lastScrollY) {
+      scrollDirection = "up";
+    }
+    lastScrollY = currentScrollY;
+  },
+  { passive: true },
+);
 
 if ("IntersectionObserver" in window && !reduceMotion.matches) {
   const revealObserver = new IntersectionObserver(
