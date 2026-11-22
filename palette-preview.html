@@ -1,0 +1,508 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Preview pilihan palet warna portfolio." />
+    <title>Portfolio Palette Preview</title>
+    <style>
+      :root {
+        color-scheme: light;
+        font:
+          16px/1.5 Arial,
+          Helvetica,
+          sans-serif;
+        background: #f8fafc;
+        color: #0f172a;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background: #f8fafc;
+      }
+
+      main {
+        width: min(calc(100% - 32px), 1180px);
+        margin: 0 auto;
+        padding: 48px 0 72px;
+      }
+
+      h1,
+      h2,
+      h3 {
+        margin: 0;
+        font-family: Georgia, "Times New Roman", serif;
+        font-weight: 400;
+        letter-spacing: -0.04em;
+      }
+
+      h1 {
+        max-width: 720px;
+        font-size: clamp(2.5rem, 7vw, 5rem);
+        line-height: 0.98;
+      }
+
+      h1 span {
+        color: #2563eb;
+      }
+
+      .intro {
+        max-width: 620px;
+        margin: 20px 0 40px;
+        color: #475569;
+      }
+
+      .palette-list {
+        display: grid;
+        gap: 32px;
+      }
+
+      .palette {
+        overflow: hidden;
+        border: 1px solid var(--border);
+        background: var(--background);
+        color: var(--text);
+      }
+
+      .palette-header {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 24px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .palette-header p {
+        margin: 4px 0 0;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .swatches {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 8px;
+        padding: 16px 24px 24px;
+      }
+
+      .swatch {
+        min-height: 82px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 10px;
+        border: 1px solid color-mix(in srgb, var(--text) 18%, transparent);
+        font-size: 11px;
+      }
+
+      .swatch strong {
+        font-size: 12px;
+      }
+
+      .swatch-primary {
+        background: var(--primary);
+        color: var(--on-primary);
+      }
+
+      .swatch-accent {
+        background: var(--accent);
+        color: var(--on-accent);
+      }
+
+      .swatch-neutral-1 {
+        background: var(--neutral-1);
+        color: var(--text);
+      }
+
+      .swatch-neutral-2 {
+        background: var(--neutral-2);
+        color: var(--text);
+      }
+
+      .swatch-text {
+        background: var(--text);
+        color: var(--background);
+      }
+
+      .preview {
+        display: grid;
+        gap: 16px;
+        padding: 24px;
+        background: var(--neutral-1);
+        --preview-surface: var(--background);
+        --preview-border: var(--border);
+        --preview-text: var(--text);
+        --preview-muted: var(--muted);
+        --preview-primary: var(--primary);
+        --preview-on-primary: var(--on-primary);
+      }
+
+      .preview.dark {
+        background: var(--dark-background);
+        color: var(--dark-text);
+        --preview-surface: var(--dark-surface);
+        --preview-border: var(--dark-border);
+        --preview-text: var(--dark-text);
+        --preview-muted: var(--dark-muted);
+        --preview-primary: var(--dark-primary);
+        --preview-on-primary: var(--dark-on-primary);
+      }
+
+      .preview-nav,
+      .preview-card {
+        border: 1px solid var(--preview-border);
+        background: var(--preview-surface);
+      }
+
+      .preview-nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 14px 16px;
+      }
+
+      .preview-nav strong {
+        color: var(--preview-text);
+        font-family: Georgia, "Times New Roman", serif;
+        font-weight: 400;
+      }
+
+      .preview-nav span {
+        color: var(--preview-muted);
+        font-size: 12px;
+      }
+
+      .preview-body {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(180px, 0.55fr);
+        gap: 16px;
+      }
+
+      .preview-card {
+        padding: 24px;
+      }
+
+      .preview-card h3 {
+        margin-bottom: 8px;
+        color: var(--preview-text);
+        font-size: 28px;
+      }
+
+      .preview-card p {
+        margin: 0 0 18px;
+        color: var(--preview-muted);
+        font-size: 14px;
+      }
+
+      .preview-button {
+        min-height: 44px;
+        padding: 0 18px;
+        border: 1px solid transparent;
+        background: var(--preview-primary);
+        color: var(--preview-on-primary);
+        font: inherit;
+        font-weight: 700;
+      }
+
+      .mode-label {
+        margin: 4px 0 -4px;
+        color: var(--muted);
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      @media (max-width: 620px) {
+        .palette-header {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+
+        .swatches {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .preview-body {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .cobalt {
+        --primary: #1d4ed8;
+        --on-primary: #ffffff;
+        --accent: #0f766e;
+        --on-accent: #ffffff;
+        --neutral-1: #f8fafc;
+        --neutral-2: #e2e8f0;
+        --text: #0f172a;
+        --background: #ffffff;
+        --surface: #ffffff;
+        --border: #cbd5e1;
+        --muted: #475569;
+        --dark-primary: #93c5fd;
+        --dark-on-primary: #172554;
+        --dark-background: #0f172a;
+        --dark-surface: #1e293b;
+        --dark-border: #475569;
+        --dark-text: #f8fafc;
+        --dark-muted: #cbd5e1;
+      }
+
+      .terracotta {
+        --primary: #9a3412;
+        --on-primary: #ffffff;
+        --accent: #0f766e;
+        --on-accent: #ffffff;
+        --neutral-1: #fff7ed;
+        --neutral-2: #fed7aa;
+        --text: #431407;
+        --background: #ffffff;
+        --surface: #ffffff;
+        --border: #fdba74;
+        --muted: #7c2d12;
+        --dark-primary: #fdba74;
+        --dark-on-primary: #431407;
+        --dark-background: #1c1917;
+        --dark-surface: #292524;
+        --dark-border: #78716c;
+        --dark-text: #fff7ed;
+        --dark-muted: #e7e5e4;
+      }
+
+      .plum {
+        --primary: #6b21a8;
+        --on-primary: #ffffff;
+        --accent: #0369a1;
+        --on-accent: #ffffff;
+        --neutral-1: #faf5ff;
+        --neutral-2: #ede9fe;
+        --text: #1f2937;
+        --background: #ffffff;
+        --surface: #ffffff;
+        --border: #c4b5fd;
+        --muted: #4c1d95;
+        --dark-primary: #d8b4fe;
+        --dark-on-primary: #3b0764;
+        --dark-background: #1e1b4b;
+        --dark-surface: #312e81;
+        --dark-border: #818cf8;
+        --dark-text: #faf5ff;
+        --dark-muted: #ddd6fe;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Pilih arah warna <span>portfolio.</span></h1>
+      <p class="intro">
+        Tiga opsi berikut memakai pasangan teks dan latar dengan kontras minimum
+        WCAG AA untuk teks normal. Setiap opsi menampilkan contoh mode terang
+        dan gelap.
+      </p>
+
+      <div class="palette-list">
+        <section class="palette cobalt">
+          <header class="palette-header">
+            <div>
+              <h2>01. Cobalt Signal</h2>
+              <p>Profesional, jernih, dan teknis.</p>
+            </div>
+            <span>Light + Dark</span>
+          </header>
+          <div class="swatches">
+            <div class="swatch swatch-primary">
+              <strong>Primary</strong><span>#1D4ED8</span>
+            </div>
+            <div class="swatch swatch-accent">
+              <strong>Accent</strong><span>#0F766E</span>
+            </div>
+            <div class="swatch swatch-neutral-1">
+              <strong>Neutral 1</strong><span>#F8FAFC</span>
+            </div>
+            <div class="swatch swatch-neutral-2">
+              <strong>Neutral 2</strong><span>#E2E8F0</span>
+            </div>
+            <div class="swatch swatch-text">
+              <strong>Text</strong><span>#0F172A</span>
+            </div>
+          </div>
+          <p class="mode-label">Mode terang</p>
+          <div class="preview">
+            <nav class="preview-nav">
+              <strong>DHANDY</strong><span>Profil · Karya · Kontak</span>
+            </nav>
+            <div class="preview-body">
+              <article class="preview-card">
+                <h3>Ide yang terasa sederhana.</h3>
+                <p>Struktur yang rapi membantu pesan utama tetap jelas.</p>
+                <button class="preview-button" type="button">
+                  Mulai percakapan
+                </button>
+              </article>
+              <article class="preview-card">
+                <h3>01</h3>
+                <p>Product thinking</p>
+              </article>
+            </div>
+          </div>
+          <p class="mode-label">Mode gelap</p>
+          <div class="preview dark">
+            <nav class="preview-nav">
+              <strong>DHANDY</strong><span>Profil · Karya · Kontak</span>
+            </nav>
+            <div class="preview-body">
+              <article class="preview-card">
+                <h3>Ide yang terasa sederhana.</h3>
+                <p>Struktur yang rapi membantu pesan utama tetap jelas.</p>
+                <button class="preview-button" type="button">
+                  Mulai percakapan
+                </button>
+              </article>
+              <article class="preview-card">
+                <h3>01</h3>
+                <p>Product thinking</p>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section class="palette terracotta">
+          <header class="palette-header">
+            <div>
+              <h2>02. Warm Workshop</h2>
+              <p>Hangat, humanis, dan berkarakter.</p>
+            </div>
+            <span>Light + Dark</span>
+          </header>
+          <div class="swatches">
+            <div class="swatch swatch-primary">
+              <strong>Primary</strong><span>#9A3412</span>
+            </div>
+            <div class="swatch swatch-accent">
+              <strong>Accent</strong><span>#0F766E</span>
+            </div>
+            <div class="swatch swatch-neutral-1">
+              <strong>Neutral 1</strong><span>#FFF7ED</span>
+            </div>
+            <div class="swatch swatch-neutral-2">
+              <strong>Neutral 2</strong><span>#FED7AA</span>
+            </div>
+            <div class="swatch swatch-text">
+              <strong>Text</strong><span>#431407</span>
+            </div>
+          </div>
+          <p class="mode-label">Mode terang</p>
+          <div class="preview">
+            <nav class="preview-nav">
+              <strong>DHANDY</strong><span>Profil · Karya · Kontak</span>
+            </nav>
+            <div class="preview-body">
+              <article class="preview-card">
+                <h3>Ide yang terasa sederhana.</h3>
+                <p>Struktur yang rapi membantu pesan utama tetap jelas.</p>
+                <button class="preview-button" type="button">
+                  Mulai percakapan
+                </button>
+              </article>
+              <article class="preview-card">
+                <h3>01</h3>
+                <p>Product thinking</p>
+              </article>
+            </div>
+          </div>
+          <p class="mode-label">Mode gelap</p>
+          <div class="preview dark">
+            <nav class="preview-nav">
+              <strong>DHANDY</strong><span>Profil · Karya · Kontak</span>
+            </nav>
+            <div class="preview-body">
+              <article class="preview-card">
+                <h3>Ide yang terasa sederhana.</h3>
+                <p>Struktur yang rapi membantu pesan utama tetap jelas.</p>
+                <button class="preview-button" type="button">
+                  Mulai percakapan
+                </button>
+              </article>
+              <article class="preview-card">
+                <h3>01</h3>
+                <p>Product thinking</p>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section class="palette plum">
+          <header class="palette-header">
+            <div>
+              <h2>03. Plum Logic</h2>
+              <p>Kreatif, fokus, dan modern.</p>
+            </div>
+            <span>Light + Dark</span>
+          </header>
+          <div class="swatches">
+            <div class="swatch swatch-primary">
+              <strong>Primary</strong><span>#6B21A8</span>
+            </div>
+            <div class="swatch swatch-accent">
+              <strong>Accent</strong><span>#0369A1</span>
+            </div>
+            <div class="swatch swatch-neutral-1">
+              <strong>Neutral 1</strong><span>#FAF5FF</span>
+            </div>
+            <div class="swatch swatch-neutral-2">
+              <strong>Neutral 2</strong><span>#EDE9FE</span>
+            </div>
+            <div class="swatch swatch-text">
+              <strong>Text</strong><span>#1F2937</span>
+            </div>
+          </div>
+          <p class="mode-label">Mode terang</p>
+          <div class="preview">
+            <nav class="preview-nav">
+              <strong>DHANDY</strong><span>Profil · Karya · Kontak</span>
+            </nav>
+            <div class="preview-body">
+              <article class="preview-card">
+                <h3>Ide yang terasa sederhana.</h3>
+                <p>Struktur yang rapi membantu pesan utama tetap jelas.</p>
+                <button class="preview-button" type="button">
+                  Mulai percakapan
+                </button>
+              </article>
+              <article class="preview-card">
+                <h3>01</h3>
+                <p>Product thinking</p>
+              </article>
+            </div>
+          </div>
+          <p class="mode-label">Mode gelap</p>
+          <div class="preview dark">
+            <nav class="preview-nav">
+              <strong>DHANDY</strong><span>Profil · Karya · Kontak</span>
+            </nav>
+            <div class="preview-body">
+              <article class="preview-card">
+                <h3>Ide yang terasa sederhana.</h3>
+                <p>Struktur yang rapi membantu pesan utama tetap jelas.</p>
+                <button class="preview-button" type="button">
+                  Mulai percakapan
+                </button>
+              </article>
+              <article class="preview-card">
+                <h3>01</h3>
+                <p>Product thinking</p>
+              </article>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </body>
+</html>
