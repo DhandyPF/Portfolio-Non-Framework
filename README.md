@@ -23,12 +23,15 @@ Perjalanan akademis saya dimulai dari **SMK Negeri 1 Cikedung** pada jurusan Rek
 
 - Profil dan bio pribadi
 - Riwayat pendidikan
+- Proyek publik yang dapat ditinjau melalui GitHub
 - Pengalaman kegiatan dan sertifikat
 - Daftar bahasa, framework, alat, dan teknologi
 - Bidang peminatan
-- Informasi kontak dan tautan GitHub
+- Form kontak dengan penyimpanan pesan dan kotak masuk di dashboard admin
+- Informasi email dan tautan GitHub
 - Tema terang dan gelap
-- Navbar responsif dengan animasi saat masuk dan saat halaman digulir
+- Navigasi responsif yang tetap dapat digunakan tanpa JavaScript
+- Sertifikat yang dapat dijeda dan menghormati preferensi pengurangan gerakan
 - Dashboard admin untuk mengelola konten portfolio
 
 ## Menjalankan secara Lokal

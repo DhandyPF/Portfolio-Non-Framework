@@ -21,17 +21,47 @@ try {
 
 $profile = $data['profile'];
 $flash = get_flash();
+$contactForm = $_SESSION['contact_form'] ?? [];
+unset($_SESSION['contact_form']);
+$contactEmail = filter_var((string) ($profile['email'] ?? ''), FILTER_VALIDATE_EMAIL) ?: '';
 
 // Daftar navigasi dibuat dari array agar tautan mudah ditambah atau diubah.
 $navLinks = [
     ['href' => '#tentang', 'label' => 'Tentang'],
     ['href' => '#pendidikan', 'label' => 'Pendidikan'],
+    ['href' => '#proyek', 'label' => 'Proyek'],
     ['href' => '#kegiatan', 'label' => 'Kegiatan'],
     ['href' => '#keahlian', 'label' => 'Keahlian'],
     ['href' => '#peminatan', 'label' => 'Peminatan'],
     ['href' => '#kontak', 'label' => 'Kontak'],
 ];
 $markers = ['code-block' => '</>', 'robot-brain' => 'AI', 'pickaxe' => '◇'];
+$projects = [
+    [
+        'name' => 'TaskFlow',
+        'repository' => 'TaskFlow-App',
+        'description' => 'Aplikasi manajemen tugas berbasis web dengan akun pengguna, prioritas, tenggat waktu, dan status penyelesaian.',
+        'stack' => ['Go', 'Web app', 'Task management'],
+    ],
+    [
+        'name' => 'Sistem Parkir',
+        'repository' => 'project-pbo-sistem-parkir',
+        'description' => 'Aplikasi desktop Java Swing untuk pengelolaan parkir, dengan penerapan OOP, Strategy Pattern, dan Repository Pattern.',
+        'stack' => ['Java', 'Swing', 'OOP'],
+    ],
+    [
+        'name' => 'Website Portfolio',
+        'repository' => 'Website-Portfolio',
+        'description' => 'Website portfolio pribadi dengan Next.js, React, dan Tailwind CSS.',
+        'stack' => ['Next.js', 'React', 'Tailwind CSS'],
+    ],
+    [
+        'name' => 'Metafor 2026',
+        'repository' => 'metafor-2026',
+        'description' => 'Contoh website profil kelompok sederhana untuk kegiatan Metafor 2026.',
+        'stack' => ['HTML', 'Website profil'],
+    ],
+];
 ?>
 <!doctype html>
 <html lang="id">
@@ -54,8 +84,11 @@ $markers = ['code-block' => '</>', 'robot-brain' => 'AI', 'pickaxe' => '◇'];
         // Gunakan preferensi sistem jika penyimpanan browser tidak tersedia.
     }
     </script>
+    <script>
+    document.documentElement.classList.add("js");
+    </script>
     <title><?= e($profile['name'] ?? 'Dhandy Putra Fahruddin') ?> | Portfolio</title>
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/style.css?v=<?= filemtime(__DIR__ . '/assets/css/style.css') ?>">
 </head>
 
 <body>
@@ -106,35 +139,21 @@ $markers = ['code-block' => '</>', 'robot-brain' => 'AI', 'pickaxe' => '◇'];
                     </div>
                     <p class="availability">TERBUKA UNTUK PROYEK YANG MEMBUTUHKAN KETELITIAN DAN RASA INGIN TAHU</p>
                 </div>
-                <div class="workspace-card reveal reveal-delay-2" aria-label="Ringkasan portofolio">
-                    <div class="workspace-bar"><span>DHANDY / WORKSPACE</span></div>
+                <article class="workspace-card featured-project reveal reveal-delay-2">
+                    <div class="workspace-bar"><span>PROYEK / OPEN SOURCE</span></div>
                     <div class="workspace-body">
-                        <div class="workspace-heading">
-                            <div>
-                                <p class="eyebrow">SELECTED WORK</p>
-                                <h2>Sistem yang terasa sederhana.</h2>
-                            </div>
-                            <span class="square-icon" aria-hidden="true">↗</span>
-                        </div>
-                        <div class="workspace-panels">
-                            <div class="wireframe-panel">
-                                <span class="dots" aria-hidden="true">
-                                    <i></i><i></i><i></i>
-                                </span>
-                                <div class="wire-lines">
-                                    <span></span><span></span><span></span>
-                                </div>
-                            </div>
-                            <div class="focus-panel">
-                                <span>FOCUS</span>
-                                <strong>03</strong>
-                                <small>ideas in motion</small>
-                            </div>
-                        </div>
-                        <div class="tag-row"><span>PRODUCT THINKING</span><span>FRONTEND</span><span>CURIOSITY</span>
+                        <p class="eyebrow">PORTFOLIO PERSONAL</p>
+                        <h2>Portfolio Non-Framework</h2>
+                        <p class="description">Website portfolio ini dibuat dengan PHP, MySQL, HTML, CSS, dan JavaScript.</p>
+                        <a class="project-link" href="https://github.com/DhandyPF/Portfolio-Non-Framework"
+                            target="_blank" rel="noopener noreferrer">
+                            Lihat repositori <span aria-hidden="true">↗</span>
+                        </a>
+                        <div class="project-tags" aria-label="Teknologi proyek">
+                            <span>PHP</span><span>MySQL</span><span>HTML · CSS · JS</span>
                         </div>
                     </div>
-                </div>
+                </article>
             </div>
         </section>
 
@@ -216,6 +235,45 @@ $markers = ['code-block' => '</>', 'robot-brain' => 'AI', 'pickaxe' => '◇'];
             </div>
         </section>
 
+        <section id="proyek" class="section-shell section-muted">
+            <div class="page-shell">
+                <div class="section-heading">
+                    <div>
+                        <p class="eyebrow">Repositori publik</p>
+                        <h2>Proyek yang bisa ditinjau.</h2>
+                    </div>
+                    <p>Beberapa proyek yang sudah saya kerjakan. Setiap kartu menuju repositori sumbernya di GitHub.</p>
+                </div>
+                <div class="project-grid">
+                    <?php foreach ($projects as $project): ?>
+                    <article class="card project-card">
+                        <div class="project-top">
+                            <span>PROYEK</span>
+                            <span aria-hidden="true">↗</span>
+                        </div>
+                        <h3>
+                            <a href="https://github.com/DhandyPF/<?= e($project['repository']) ?>"
+                                target="_blank" rel="noopener noreferrer">
+                                <?= e($project['name']) ?>
+                            </a>
+                        </h3>
+                        <p><?= e($project['description']) ?></p>
+                        <div class="project-tags" aria-label="Teknologi proyek">
+                            <?php foreach ($project['stack'] as $technology): ?>
+                            <span><?= e($technology) ?></span>
+                            <?php endforeach; ?>
+                        </div>
+                        <a class="project-link" href="https://github.com/DhandyPF/<?= e($project['repository']) ?>"
+                            target="_blank" rel="noopener noreferrer"
+                            aria-label="Lihat proyek <?= e($project['name']) ?> di GitHub">
+                            Lihat di GitHub <span aria-hidden="true">↗</span>
+                        </a>
+                    </article>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        </section>
+
         <!-- Kegiatan dan sertifikat diambil dari tabel certificates. -->
         <section id="kegiatan" class="section-shell section-muted">
             <div class="page-shell">
@@ -228,19 +286,28 @@ $markers = ['code-block' => '</>', 'robot-brain' => 'AI', 'pickaxe' => '◇'];
                             Pelatihan, kegiatan, organisasi, dan pencapaian yang mendukung perjalanan belajar saya.
                         </p> -->
                 </div>
-                <div class="certificate-grid">
-                    <?php foreach ($data['certificates'] as $certificate): ?>
-                    <article class="card certificate-card reveal">
-                        <img src="assets/images/<?= e($certificate['image_file']) ?>"
-                            alt="Preview <?= e($certificate['judul']) ?>">
-                        <div>
-                            <p class="accent-text"><?= e($certificate['periode']) ?></p>
-                            <h3><?= e($certificate['judul']) ?></h3>
-                            <p class="muted"><?= e($certificate['penerbit']) ?></p>
-                            <p class="description"><?= e($certificate['deskripsi']) ?></p>
-                        </div>
-                    </article>
-                    <?php endforeach; ?>
+                <div class="certificate-carousel" role="region" aria-roledescription="carousel"
+                    aria-label="Kegiatan dan sertifikat">
+                    <div class="certificate-controls" hidden>
+                        <button class="button button-secondary" id="certificate-toggle" type="button"
+                            aria-pressed="false">Jeda sertifikat</button>
+                    </div>
+                    <div class="certificate-grid" id="certificate-track" tabindex="0" role="group"
+                        aria-label="Daftar kegiatan dan sertifikat">
+                        <?php foreach ($data['certificates'] as $index => $certificate): ?>
+                        <article class="card certificate-card" role="group" aria-roledescription="slide"
+                            aria-label="<?= $index + 1 ?> dari <?= count($data['certificates']) ?>">
+                            <img src="assets/images/<?= e($certificate['image_file']) ?>"
+                                alt="Preview <?= e($certificate['judul']) ?>">
+                            <div>
+                                <p class="accent-text"><?= e($certificate['periode']) ?></p>
+                                <h3><?= e($certificate['judul']) ?></h3>
+                                <p class="muted"><?= e($certificate['penerbit']) ?></p>
+                                <p class="description"><?= e($certificate['deskripsi']) ?></p>
+                            </div>
+                        </article>
+                        <?php endforeach; ?>
+                    </div>
                 </div>
             </div>
         </section>
@@ -309,17 +376,43 @@ $markers = ['code-block' => '</>', 'robot-brain' => 'AI', 'pickaxe' => '◇'];
             </div>
         </section>
 
-        <!-- Form kontak dinonaktifkan sementara; email tetap dapat ditampilkan. -->
         <section id="kontak" class="section-shell">
             <div class="page-shell contact-grid">
                 <div class="reveal">
-                    <!-- <p class="eyebrow">Mari terhubung</p> -->
+                    <p class="eyebrow">Mari terhubung</p>
                     <h2>Ada gagasan yang perlu dibangun?</h2>
-                    <p class="contact-copy">Fitur kontak sementara belum tersedia.</p>
+                    <p class="contact-copy">Kirim pesan melalui formulir ini. Pesan akan tersimpan dan bisa saya tindak lanjuti melalui email.</p>
                     <p class="email-note">
                         <span>EMAIL</span>
-                        <?= e($profile['email'] ?? 'Belum tersedia.') ?>
+                        <?php if ($contactEmail): ?>
+                        <a href="mailto:<?= e($contactEmail) ?>"><?= e($contactEmail) ?></a>
+                        <?php else: ?>
+                        Belum tersedia.
+                        <?php endif; ?>
                     </p>
+                </div>
+                <div class="reveal reveal-delay-1">
+                    <?php if ($flash): ?>
+                    <p class="alert <?= e($flash['type'] ?? '') ?>" role="<?= ($flash['type'] ?? '') === 'error' ? 'alert' : 'status' ?>">
+                        <?= e($flash['message'] ?? '') ?>
+                    </p>
+                    <?php endif; ?>
+                    <form class="contact-form" method="post" action="contact.php">
+                        <input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>">
+                        <label for="contact-name">Nama</label>
+                        <input id="contact-name" name="name" autocomplete="name" maxlength="150" required
+                            value="<?= e($contactForm['name'] ?? '') ?>">
+                        <label for="contact-email">Email</label>
+                        <input id="contact-email" type="email" name="email" autocomplete="email" maxlength="190"
+                            required value="<?= e($contactForm['email'] ?? '') ?>">
+                        <label for="contact-subject">Subjek</label>
+                        <input id="contact-subject" name="subject" maxlength="190" required
+                            value="<?= e($contactForm['subject'] ?? '') ?>">
+                        <label for="contact-message">Pesan</label>
+                        <textarea id="contact-message" name="message" rows="5" maxlength="5000"
+                            required><?= e($contactForm['message'] ?? '') ?></textarea>
+                        <button class="button button-primary" type="submit">Kirim pesan</button>
+                    </form>
                 </div>
             </div>
         </section>
@@ -336,7 +429,7 @@ $markers = ['code-block' => '</>', 'robot-brain' => 'AI', 'pickaxe' => '◇'];
             </div>
         </div>
     </footer>
-    <script src="assets/js/main.js"></script>
+    <script src="assets/js/main.js?v=<?= filemtime(__DIR__ . '/assets/js/main.js') ?>"></script>
 </body>
 
 </html>

@@ -239,6 +239,42 @@
   color: var(--danger, #b91c1c);
 }
 
+.message-list {
+  display: grid;
+  gap: 14px;
+}
+
+.message-card h3 {
+  font-size: 24px;
+}
+
+.message-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.message-header p,
+.message-header time {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.message-header a {
+  color: var(--accent);
+}
+
+.message-header time {
+  flex: 0 0 auto;
+}
+
+.message-body {
+  margin: 20px 0 0;
+  overflow-wrap: anywhere;
+}
+
 code {
   color: var(--accent);
 }
@@ -326,6 +362,11 @@ code {
   .record {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .message-header {
+    flex-direction: column;
+    gap: 0;
   }
 
   .record-actions {

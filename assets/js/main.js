@@ -1,7 +1,11 @@
+document.documentElement.classList.add("js");
+
 const menuToggle = document.querySelector(".menu-toggle");
 const primaryNav = document.querySelector("#primary-nav");
 const siteHeader = document.querySelector(".site-header");
 const certificateTrack = document.querySelector(".certificate-grid");
+const certificateControls = document.querySelector(".certificate-controls");
+const certificateToggle = document.querySelector("#certificate-toggle");
 const profileCard = document.querySelector(".profile-card");
 const themeToggle = document.querySelector(".theme-toggle");
 const colorSchemeMeta = document.querySelector('meta[name="color-scheme"]');
@@ -149,10 +153,8 @@ const updateNavbarLayout = () => {
   const fits = navShell ? navShell.scrollWidth <= navShell.clientWidth : false;
 
   siteHeader.classList.toggle("is-wide", fits);
-  if (!fits) {
-    primaryNav.classList.remove("is-open");
-    menuToggle?.setAttribute("aria-expanded", "false");
-  }
+  primaryNav.classList.remove("is-open");
+  menuToggle?.setAttribute("aria-expanded", "false");
 };
 
 updateNavbarLayout();
@@ -163,9 +165,6 @@ if ("ResizeObserver" in window && siteHeader) {
   const navShell = siteHeader.querySelector(".nav-shell");
   if (navShell) {
     navbarObserver.observe(navShell);
-  }
-  if (primaryNav) {
-    navbarObserver.observe(primaryNav);
   }
 }
 
@@ -192,33 +191,41 @@ profileCard?.addEventListener("click", () => {
   }, 1300);
 });
 
-// Geser sertifikat perlahan ke arah kanan visual, lalu ulangi dari ujung awal.
-if (certificateTrack && !reduceMotion.matches) {
+// Putar sertifikat otomatis hanya saat ada ruang untuk bergerak dan tidak ada jeda.
+if (certificateTrack && certificateControls && certificateToggle) {
   let animationFrame = 0;
   let lastTime = 0;
-  let paused = false;
-  let hasStarted = false;
+  let pausedByUser = false;
+  let pointerInside = false;
+  let focusInside = false;
+  let touchActive = false;
   const speed = 0.035;
+
+  const isPaused = () =>
+    pausedByUser ||
+    pointerInside ||
+    focusInside ||
+    touchActive ||
+    document.hidden;
+
+  const updatePauseControl = () => {
+    certificateToggle.textContent = pausedByUser
+      ? "Lanjutkan sertifikat"
+      : "Jeda sertifikat";
+    certificateToggle.setAttribute("aria-pressed", String(pausedByUser));
+  };
 
   const moveCertificates = (time) => {
     if (!lastTime) {
       lastTime = time;
     }
 
-    if (
-      !paused &&
-      certificateTrack.scrollWidth > certificateTrack.clientWidth
-    ) {
-      if (!hasStarted) {
-        certificateTrack.scrollLeft =
-          certificateTrack.scrollWidth - certificateTrack.clientWidth;
-        hasStarted = true;
-      }
+    const maxScroll = certificateTrack.scrollWidth - certificateTrack.clientWidth;
+    if (!isPaused() && maxScroll > 0) {
       const elapsed = Math.min(time - lastTime, 50);
-      certificateTrack.scrollLeft -= elapsed * speed;
-      if (certificateTrack.scrollLeft <= 0) {
-        certificateTrack.scrollLeft =
-          certificateTrack.scrollWidth - certificateTrack.clientWidth;
+      certificateTrack.scrollLeft += elapsed * speed;
+      if (certificateTrack.scrollLeft >= maxScroll) {
+        certificateTrack.scrollLeft = 0;
       }
     }
 
@@ -226,32 +233,71 @@ if (certificateTrack && !reduceMotion.matches) {
     animationFrame = window.requestAnimationFrame(moveCertificates);
   };
 
-  const pauseCertificates = () => {
-    paused = true;
+  const updateAutoplay = () => {
+    const canAutoplay =
+      !reduceMotion.matches &&
+      certificateTrack.children.length > 1 &&
+      certificateTrack.scrollWidth > certificateTrack.clientWidth;
+
+    certificateControls.hidden = !canAutoplay;
+    certificateTrack.classList.toggle("is-autoplay", canAutoplay);
+    if (!canAutoplay && animationFrame) {
+      window.cancelAnimationFrame(animationFrame);
+      animationFrame = 0;
+      return;
+    }
+
+    if (canAutoplay && !animationFrame) {
+      lastTime = 0;
+      animationFrame = window.requestAnimationFrame(moveCertificates);
+    }
   };
 
-  const resumeCertificates = () => {
-    paused = false;
-  };
-
-  certificateTrack.addEventListener("pointerenter", pauseCertificates);
-  certificateTrack.addEventListener("pointerleave", resumeCertificates);
-  certificateTrack.addEventListener("focusin", pauseCertificates);
-  certificateTrack.addEventListener("focusout", resumeCertificates);
-  certificateTrack.addEventListener("touchstart", pauseCertificates, {
+  certificateToggle.addEventListener("click", () => {
+    pausedByUser = !pausedByUser;
+    updatePauseControl();
+  });
+  certificateTrack.addEventListener("pointerenter", () => {
+    pointerInside = true;
+  });
+  certificateTrack.addEventListener("pointerleave", () => {
+    pointerInside = false;
+  });
+  certificateTrack.addEventListener("focusin", () => {
+    focusInside = true;
+  });
+  certificateTrack.addEventListener("focusout", (event) => {
+    focusInside =
+      event.relatedTarget instanceof Node &&
+      certificateTrack.contains(event.relatedTarget);
+  });
+  certificateTrack.addEventListener("touchstart", () => {
+    touchActive = true;
+  }, {
     passive: true,
   });
-  certificateTrack.addEventListener("touchend", resumeCertificates, {
+  certificateTrack.addEventListener("touchend", () => {
+    touchActive = false;
+  }, {
     passive: true,
   });
-  animationFrame = window.requestAnimationFrame(moveCertificates);
+  certificateTrack.addEventListener("touchcancel", () => {
+    touchActive = false;
+  }, {
+    passive: true,
+  });
+  document.addEventListener("visibilitychange", updateAutoplay);
+  window.addEventListener("resize", updateAutoplay, { passive: true });
+  reduceMotion.addEventListener("change", updateAutoplay);
+  updatePauseControl();
+  updateAutoplay();
 
   window.addEventListener(
     "pagehide",
     () => {
       window.cancelAnimationFrame(animationFrame);
+      animationFrame = 0;
     },
-    { once: true },
   );
 }
 

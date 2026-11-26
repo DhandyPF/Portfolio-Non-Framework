@@ -274,8 +274,8 @@ if (!$isLoggedIn) {
     }
     </script>
     <title>Login Admin | Portfolio</title>
-    <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="stylesheet" href="assets/css/admin.css">
+    <link rel="stylesheet" href="assets/css/style.css?v=<?= filemtime(__DIR__ . '/assets/css/style.css') ?>">
+    <link rel="stylesheet" href="assets/css/admin.css?v=<?= filemtime(__DIR__ . '/assets/css/admin.css') ?>">
 </head>
 
 <body class="admin-page admin-login-page">
@@ -315,7 +315,7 @@ if (!$isLoggedIn) {
         </form>
         <a class="back-link" href="index.php">← Kembali ke portfolio</a>
     </main>
-    <script src="assets/js/main.js"></script>
+    <script src="assets/js/main.js?v=<?= filemtime(__DIR__ . '/assets/js/main.js') ?>"></script>
 </body>
 
 </html>
@@ -336,6 +336,12 @@ $skills = $pdo->query(
      ORDER BY skill_groups.sort_order, skills.sort_order, skills.id'
 )->fetchAll();
 $interests = $pdo->query('SELECT * FROM interests ORDER BY sort_order ASC, id ASC')->fetchAll();
+$messages = $pdo->query(
+    'SELECT id, name, email, subject, message, created_at
+     FROM messages
+     ORDER BY created_at DESC, id DESC
+     LIMIT 100'
+)->fetchAll();
 $flash = $_SESSION['admin_flash'] ?? null;
 unset($_SESSION['admin_flash']);
 $edit = explode(':', (string) ($_GET['edit'] ?? ''), 2);
@@ -375,8 +381,8 @@ $interestEdit = $editType === 'interest' ? $find($interests, $editId) : [];
     }
     </script>
     <title>Dashboard Admin | Portfolio</title>
-    <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="stylesheet" href="assets/css/admin.css">
+    <link rel="stylesheet" href="assets/css/style.css?v=<?= filemtime(__DIR__ . '/assets/css/style.css') ?>">
+    <link rel="stylesheet" href="assets/css/admin.css?v=<?= filemtime(__DIR__ . '/assets/css/admin.css') ?>">
 </head>
 
 <body class="admin-page">
@@ -394,6 +400,7 @@ $interestEdit = $editType === 'interest' ? $find($interests, $editId) : [];
             </div>
             <div class="header-actions">
                 <a class="button button-secondary" href="index.php">Lihat portfolio</a>
+                <a class="button button-secondary" href="#pesan-masuk">Pesan masuk</a>
                 <a class="button button-secondary" href="admin.php?action=logout">Keluar</a>
             </div>
         </div>
@@ -402,7 +409,7 @@ $interestEdit = $editType === 'interest' ? $find($interests, $editId) : [];
         <section class="admin-intro">
             <p class="eyebrow">DHANDY / RUANG KERJA</p>
             <h1>Dashboard konten.</h1>
-            <p class="intro-text">Kelola lima bagian utama portfolio. Kolom path gambar mengacu pada folder
+            <p class="intro-text">Kelola konten portfolio dan baca pesan yang masuk. Kolom path gambar mengacu pada folder
                 <code>assets/images</code>.
             </p>
         </section>
@@ -752,8 +759,38 @@ $interestEdit = $editType === 'interest' ? $find($interests, $editId) : [];
                 </div>
             </div>
         </section>
+
+        <section id="pesan-masuk" class="admin-section">
+            <div class="section-title">
+                <p class="eyebrow">Kotak masuk</p>
+                <h2>Pesan dari pengunjung.</h2>
+            </div>
+            <?php if (!$messages): ?>
+            <p class="muted">Belum ada pesan yang masuk.</p>
+            <?php else: ?>
+            <div class="message-list">
+                <?php foreach ($messages as $message): ?>
+                <article class="message-card panel">
+                    <div class="message-header">
+                        <div>
+                            <h3><?= e($message['subject']) ?></h3>
+                            <p>
+                                <?= e($message['name']) ?> ·
+                                <a href="mailto:<?= e($message['email']) ?>"><?= e($message['email']) ?></a>
+                            </p>
+                        </div>
+                        <time datetime="<?= e($message['created_at']) ?>">
+                            <?= e(date('d M Y, H:i', strtotime($message['created_at']))) ?>
+                        </time>
+                    </div>
+                    <p class="message-body"><?= nl2br(e($message['message'])) ?></p>
+                </article>
+                <?php endforeach; ?>
+            </div>
+            <?php endif; ?>
+        </section>
     </main>
-    <script src="assets/js/main.js"></script>
+    <script src="assets/js/main.js?v=<?= filemtime(__DIR__ . '/assets/js/main.js') ?>"></script>
 </body>
 
 </html>
