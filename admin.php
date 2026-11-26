@@ -254,69 +254,72 @@ if (!$isLoggedIn) {
     $loginError = $_SESSION['admin_login_error'] ?? null;
     unset($_SESSION['admin_login_error']);
     ?>
-    <!doctype html>
-    <html lang="id">
-        <head>
-            <meta charset="utf-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1">
-            <meta name="color-scheme" content="light dark">
-            <script>
-                try {
-                    const storedTheme = localStorage.getItem("color-scheme");
-                    const colorSchemeMeta = document.querySelector('meta[name="color-scheme"]');
-                    if (storedTheme === "light" || storedTheme === "dark") {
-                        document.documentElement.dataset.theme = storedTheme;
-                        colorSchemeMeta.content = storedTheme;
-                    }
-                } catch (error) {
-                    // Gunakan preferensi sistem jika penyimpanan browser tidak tersedia.
-                }
-            </script>
-            <title>Login Admin | Portfolio</title>
-            <link rel="stylesheet" href="assets/css/style.css">
-            <link rel="stylesheet" href="assets/css/admin.css">
-        </head>
-        <body class="admin-page admin-login-page">
-            <a class="skip-link" href="#konten-utama">Lewati ke konten utama</a>
-            <header class="site-header admin-header">
-                <div class="page-shell nav-shell admin-nav-shell">
-                    <div class="brand-actions">
-                        <a class="brand" href="index.php" aria-label="Kembali ke portfolio">
-                            <span class="brand-mark">D.</span>
-                            <span>DHANDY</span>
-                        </a>
-                        <button class="theme-toggle" type="button" aria-label="Aktifkan mode gelap">
-                            Mode gelap
-                        </button>
-                    </div>
-                    <a class="button button-secondary" href="index.php">Lihat portfolio</a>
-                </div>
-            </header>
-            <main id="konten-utama" class="login-card">
-                <p class="eyebrow">DHANDY / ADMIN</p>
-                <h1>Kelola portfolio.</h1>
-                <p class="muted">Masuk untuk mengelola konten situs tanpa mengubah kode sumber.</p>
-                <?php if ($loginError): ?>
-                    <p class="alert error" role="alert"><?= e($loginError) ?></p>
-                <?php endif; ?>
-                <form method="post" class="admin-form">
-                    <input type="hidden" name="action" value="login">
-                    <label>
-                        Nama pengguna
-                        <input type="text" name="username" autocomplete="username" required autofocus>
-                    </label>
-                    <label>
-                        Kata sandi
-                        <input type="password" name="password" autocomplete="current-password" required>
-                    </label>
-                    <button class="button button-primary" type="submit">Masuk ke dashboard</button>
-                </form>
-                <a class="back-link" href="index.php">← Kembali ke portfolio</a>
-            </main>
-            <script src="assets/js/main.js"></script>
-        </body>
-    </html>
-    <?php
+<!doctype html>
+<html lang="id">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light dark">
+    <script>
+    try {
+        const storedTheme = localStorage.getItem("color-scheme");
+        const colorSchemeMeta = document.querySelector('meta[name="color-scheme"]');
+        if (storedTheme === "light" || storedTheme === "dark") {
+            document.documentElement.dataset.theme = storedTheme;
+            colorSchemeMeta.content = storedTheme;
+        }
+    } catch (error) {
+        // Gunakan preferensi sistem jika penyimpanan browser tidak tersedia.
+    }
+    </script>
+    <title>Login Admin | Portfolio</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/admin.css">
+</head>
+
+<body class="admin-page admin-login-page">
+    <a class="skip-link" href="#konten-utama">Lewati ke konten utama</a>
+    <header class="site-header admin-header">
+        <div class="page-shell nav-shell admin-nav-shell">
+            <div class="brand-actions">
+                <a class="brand" href="index.php" aria-label="Kembali ke portfolio">
+                    <span class="brand-mark">D.</span>
+                    <span>DHANDY</span>
+                </a>
+                <button class="theme-toggle" type="button" aria-label="Aktifkan mode gelap">
+                    Mode gelap
+                </button>
+            </div>
+            <a class="button button-secondary" href="index.php">Lihat portfolio</a>
+        </div>
+    </header>
+    <main id="konten-utama" class="login-card">
+        <p class="eyebrow">DHANDY / ADMIN</p>
+        <h1>Kelola portfolio.</h1>
+        <p class="muted">Masuk untuk mengelola konten situs tanpa mengubah kode sumber.</p>
+        <?php if ($loginError): ?>
+        <p class="alert error" role="alert"><?= e($loginError) ?></p>
+        <?php endif; ?>
+        <form method="post" class="admin-form">
+            <input type="hidden" name="action" value="login">
+            <label>
+                Nama pengguna
+                <input type="text" name="username" autocomplete="username" required autofocus>
+            </label>
+            <label>
+                Kata sandi
+                <input type="password" name="password" autocomplete="current-password" required>
+            </label>
+            <button class="button button-primary" type="submit">Masuk ke dashboard</button>
+        </form>
+        <a class="back-link" href="index.php">← Kembali ke portfolio</a>
+    </main>
+    <script src="assets/js/main.js"></script>
+</body>
+
+</html>
+<?php
     exit;
 }
 
@@ -354,409 +357,403 @@ $interestEdit = $editType === 'interest' ? $find($interests, $editId) : [];
 ?>
 <!doctype html>
 <html lang="id">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="color-scheme" content="light dark">
-        <script>
-            try {
-                const storedTheme = localStorage.getItem("color-scheme");
-                const colorSchemeMeta = document.querySelector('meta[name="color-scheme"]');
-                if (storedTheme === "light" || storedTheme === "dark") {
-                    document.documentElement.dataset.theme = storedTheme;
-                    colorSchemeMeta.content = storedTheme;
-                }
-            } catch (error) {
-                // Gunakan preferensi sistem jika penyimpanan browser tidak tersedia.
-            }
-        </script>
-        <title>Dashboard Admin | Portfolio</title>
-        <link rel="stylesheet" href="assets/css/style.css">
-        <link rel="stylesheet" href="assets/css/admin.css">
-    </head>
-    <body class="admin-page">
-        <a class="skip-link" href="#konten-utama">Lewati ke konten utama</a>
-        <header class="site-header admin-header">
-            <div class="page-shell nav-shell admin-nav-shell">
-                <div class="brand-actions">
-                    <a class="brand" href="index.php" aria-label="Kembali ke portfolio">
-                        <span class="brand-mark">D.</span>
-                        <span>DHANDY</span>
-                    </a>
-                    <button class="theme-toggle" type="button" aria-label="Aktifkan mode gelap">
-                        Mode gelap
-                    </button>
-                </div>
-                <div class="header-actions">
-                    <a class="button button-secondary" href="index.php">Lihat portfolio</a>
-                    <a class="button button-secondary" href="admin.php?action=logout">Keluar</a>
-                </div>
-            </div>
-        </header>
-        <main id="konten-utama" class="admin-container">
-            <section class="admin-intro">
-                <p class="eyebrow">DHANDY / RUANG KERJA</p>
-                <h1>Dashboard konten.</h1>
-                <p class="intro-text">Kelola lima bagian utama portfolio. Kolom path gambar mengacu pada folder <code>assets/images</code>.</p>
-            </section>
-            <?php if ($flash): ?>
-                <p class="alert <?= e($flash['type']) ?>" role="status">
-                    <?= e($flash['message']) ?>
-                </p>
-            <?php endif; ?>
 
-            <section id="tentang" class="admin-section">
-                <div class="section-title">
-                    <p class="eyebrow">Tentang saya</p>
-                    <h2>Profil</h2>
-                </div>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light dark">
+    <script>
+    try {
+        const storedTheme = localStorage.getItem("color-scheme");
+        const colorSchemeMeta = document.querySelector('meta[name="color-scheme"]');
+        if (storedTheme === "light" || storedTheme === "dark") {
+            document.documentElement.dataset.theme = storedTheme;
+            colorSchemeMeta.content = storedTheme;
+        }
+    } catch (error) {
+        // Gunakan preferensi sistem jika penyimpanan browser tidak tersedia.
+    }
+    </script>
+    <title>Dashboard Admin | Portfolio</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/admin.css">
+</head>
+
+<body class="admin-page">
+    <a class="skip-link" href="#konten-utama">Lewati ke konten utama</a>
+    <header class="site-header admin-header">
+        <div class="page-shell nav-shell admin-nav-shell">
+            <div class="brand-actions">
+                <a class="brand" href="index.php" aria-label="Kembali ke portfolio">
+                    <span class="brand-mark">D.</span>
+                    <span>DHANDY</span>
+                </a>
+                <button class="theme-toggle" type="button" aria-label="Aktifkan mode gelap">
+                    Mode gelap
+                </button>
+            </div>
+            <div class="header-actions">
+                <a class="button button-secondary" href="index.php">Lihat portfolio</a>
+                <a class="button button-secondary" href="admin.php?action=logout">Keluar</a>
+            </div>
+        </div>
+    </header>
+    <main id="konten-utama" class="admin-container">
+        <section class="admin-intro">
+            <p class="eyebrow">DHANDY / RUANG KERJA</p>
+            <h1>Dashboard konten.</h1>
+            <p class="intro-text">Kelola lima bagian utama portfolio. Kolom path gambar mengacu pada folder
+                <code>assets/images</code>.
+            </p>
+        </section>
+        <?php if ($flash): ?>
+        <p class="alert <?= e($flash['type']) ?>" role="status">
+            <?= e($flash['message']) ?>
+        </p>
+        <?php endif; ?>
+
+        <section id="tentang" class="admin-section">
+            <div class="section-title">
+                <p class="eyebrow">Tentang saya</p>
+                <h2>Profil</h2>
+            </div>
+            <form method="post" class="admin-form panel">
+                <input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>">
+                <input type="hidden" name="action" value="save_profile">
+                <input type="hidden" name="anchor" value="tentang">
+                <label>
+                    Nama
+                    <input name="name" value="<?= e($profile['name'] ?? '') ?>" required>
+                </label>
+                <label>
+                    Email
+                    <input type="email" name="email" value="<?= e($profile['email'] ?? '') ?>">
+                </label>
+                <label>
+                    Bio
+                    <textarea name="bio" rows="5" required><?= e($profile['bio'] ?? '') ?></textarea>
+                </label>
+                <button class="button button-primary" type="submit">Simpan profil</button>
+            </form>
+        </section>
+
+        <section id="pendidikan" class="admin-section">
+            <div class="section-title">
+                <p class="eyebrow">Riwayat pendidikan</p>
+                <h2>Pendidikan</h2>
+            </div>
+            <div class="admin-grid">
                 <form method="post" class="admin-form panel">
                     <input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>">
-                    <input type="hidden" name="action" value="save_profile">
-                    <input type="hidden" name="anchor" value="tentang">
+                    <input type="hidden" name="action" value="save_education">
+                    <input type="hidden" name="id" value="<?= $educationEdit['id'] ?? 0 ?>">
+                    <input type="hidden" name="anchor" value="pendidikan">
+                    <h3><?= $educationEdit ? 'Edit pendidikan' : 'Tambah pendidikan' ?></h3>
                     <label>
-                        Nama
-                        <input name="name" value="<?= e($profile['name'] ?? '') ?>" required>
+                        Institusi
+                        <input name="institusi" value="<?= e($educationEdit['institusi'] ?? '') ?>" required>
                     </label>
                     <label>
-                        Email
-                        <input type="email" name="email" value="<?= e($profile['email'] ?? '') ?>">
+                        Path logo
+                        <input name="logo_file" placeholder="edu-logos/nama.png"
+                            value="<?= e($educationEdit['logo_file'] ?? '') ?>" required>
                     </label>
                     <label>
-                        Bio
-                        <textarea name="bio" rows="5" required><?= e($profile['bio'] ?? '') ?></textarea>
+                        Jurusan
+                        <input name="jurusan" value="<?= e($educationEdit['jurusan'] ?? '') ?>" required>
                     </label>
-                    <button class="button button-primary" type="submit">Simpan profil</button>
+                    <label>
+                        Periode
+                        <input name="periode" value="<?= e($educationEdit['periode'] ?? '') ?>" required>
+                    </label>
+                    <label>
+                        Tahun mulai
+                        <input type="number" name="start_year" min="1900" max="2200"
+                            value="<?= e($educationEdit['start_year'] ?? '') ?>" required>
+                    </label>
+                    <label>
+                        Deskripsi
+                        <textarea name="deskripsi" rows="4"
+                            required><?= e($educationEdit['deskripsi'] ?? '') ?></textarea>
+                    </label>
+                    <div class="form-actions">
+                        <button class="button button-primary" type="submit">Simpan</button>
+                        <?php if ($educationEdit): ?>
+                        <a class="button button-secondary" href="admin.php#pendidikan">Batal</a>
+                        <?php endif; ?>
+                    </div>
                 </form>
-            </section>
+                <div class="record-list">
+                    <?php foreach ($education as $item): ?>
+                    <article class="record">
+                        <div>
+                            <strong><?= e($item['institusi']) ?></strong>
+                            <span><?= e($item['jurusan']) ?> · <?= e($item['periode']) ?></span>
+                        </div>
+                        <div class="record-actions">
+                            <a href="admin.php?edit=education:<?= $item['id'] ?>#pendidikan">Edit</a>
+                            <form method="post" onsubmit="return confirm('Hapus data pendidikan ini?')">
+                                <input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>">
+                                <input type="hidden" name="action" value="delete_education">
+                                <input type="hidden" name="id" value="<?= $item['id'] ?>">
+                                <input type="hidden" name="anchor" value="pendidikan">
+                                <button class="link-button danger" type="submit">Hapus</button>
+                            </form>
+                        </div>
+                    </article>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        </section>
 
-            <section id="pendidikan" class="admin-section">
-                <div class="section-title">
-                    <p class="eyebrow">Riwayat pendidikan</p>
-                    <h2>Pendidikan</h2>
-                </div>
-                <div class="admin-grid">
-                    <form method="post" class="admin-form panel">
-                        <input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>">
-                        <input type="hidden" name="action" value="save_education">
-                        <input type="hidden" name="id" value="<?= $educationEdit['id'] ?? 0 ?>">
-                        <input type="hidden" name="anchor" value="pendidikan">
-                        <h3><?= $educationEdit ? 'Edit pendidikan' : 'Tambah pendidikan' ?></h3>
-                        <label>
-                            Institusi
-                            <input name="institusi" value="<?= e($educationEdit['institusi'] ?? '') ?>" required>
-                        </label>
-                        <label>
-                            Path logo
-                            <input
-                                name="logo_file"
-                                placeholder="edu-logos/nama.png"
-                                value="<?= e($educationEdit['logo_file'] ?? '') ?>"
-                                required
-                            >
-                        </label>
-                        <label>
-                            Jurusan
-                            <input name="jurusan" value="<?= e($educationEdit['jurusan'] ?? '') ?>" required>
-                        </label>
-                        <label>
-                            Periode
-                            <input name="periode" value="<?= e($educationEdit['periode'] ?? '') ?>" required>
-                        </label>
-                        <label>
-                            Tahun mulai
-                            <input
-                                type="number"
-                                name="start_year"
-                                min="1900"
-                                max="2200"
-                                value="<?= e($educationEdit['start_year'] ?? '') ?>"
-                                required
-                            >
-                        </label>
-                        <label>
-                            Deskripsi
-                            <textarea name="deskripsi" rows="4" required><?= e($educationEdit['deskripsi'] ?? '') ?></textarea>
-                        </label>
-                        <div class="form-actions">
-                            <button class="button button-primary" type="submit">Simpan</button>
-                            <?php if ($educationEdit): ?>
-                                <a class="button button-secondary" href="admin.php#pendidikan">Batal</a>
-                            <?php endif; ?>
-                        </div>
-                    </form>
-                    <div class="record-list">
-                        <?php foreach ($education as $item): ?>
-                            <article class="record">
-                                <div>
-                                    <strong><?= e($item['institusi']) ?></strong>
-                                    <span><?= e($item['jurusan']) ?> · <?= e($item['periode']) ?></span>
-                                </div>
-                                <div class="record-actions">
-                                    <a href="admin.php?edit=education:<?= $item['id'] ?>#pendidikan">Edit</a>
-                                    <form method="post" onsubmit="return confirm('Hapus data pendidikan ini?')">
-                                        <input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>">
-                                        <input type="hidden" name="action" value="delete_education">
-                                        <input type="hidden" name="id" value="<?= $item['id'] ?>">
-                                        <input type="hidden" name="anchor" value="pendidikan">
-                                        <button class="link-button danger" type="submit">Hapus</button>
-                                    </form>
-                                </div>
-                            </article>
-                        <?php endforeach; ?>
+        <section id="kegiatan" class="admin-section">
+            <div class="section-title">
+                <p class="eyebrow">Kegiatan dan sertifikat</p>
+                <h2>Kegiatan</h2>
+            </div>
+            <div class="admin-grid">
+                <form method="post" class="admin-form panel">
+                    <input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>">
+                    <input type="hidden" name="action" value="save_certificate">
+                    <input type="hidden" name="id" value="<?= $certificateEdit['id'] ?? 0 ?>">
+                    <input type="hidden" name="anchor" value="kegiatan">
+                    <h3><?= $certificateEdit ? 'Edit kegiatan' : 'Tambah kegiatan' ?></h3>
+                    <label>
+                        Judul
+                        <input name="judul" value="<?= e($certificateEdit['judul'] ?? '') ?>" required>
+                    </label>
+                    <label>
+                        Penerbit / organisasi
+                        <input name="penerbit" value="<?= e($certificateEdit['penerbit'] ?? '') ?>" required>
+                    </label>
+                    <label>
+                        Periode
+                        <input name="periode" value="<?= e($certificateEdit['periode'] ?? '') ?>" required>
+                    </label>
+                    <label>
+                        Path gambar
+                        <input name="image_file" placeholder="certificates/nama.svg"
+                            value="<?= e($certificateEdit['image_file'] ?? '') ?>" required>
+                    </label>
+                    <label>
+                        Urutan
+                        <input type="number" name="sort_order" min="0"
+                            value="<?= e($certificateEdit['sort_order'] ?? 0) ?>" required>
+                    </label>
+                    <label>
+                        Deskripsi
+                        <textarea name="deskripsi" rows="4"
+                            required><?= e($certificateEdit['deskripsi'] ?? '') ?></textarea>
+                    </label>
+                    <div class="form-actions">
+                        <button class="button button-primary" type="submit">Simpan</button>
+                        <?php if ($certificateEdit): ?>
+                        <a class="button button-secondary" href="admin.php#kegiatan">Batal</a>
+                        <?php endif; ?>
                     </div>
+                </form>
+                <div class="record-list">
+                    <?php foreach ($certificates as $item): ?>
+                    <article class="record">
+                        <div>
+                            <strong><?= e($item['judul']) ?></strong>
+                            <span><?= e($item['penerbit']) ?> · <?= e($item['periode']) ?></span>
+                        </div>
+                        <div class="record-actions">
+                            <a href="admin.php?edit=certificate:<?= $item['id'] ?>#kegiatan">Edit</a>
+                            <form method="post" onsubmit="return confirm('Hapus kegiatan ini?')">
+                                <input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>">
+                                <input type="hidden" name="action" value="delete_certificate">
+                                <input type="hidden" name="id" value="<?= $item['id'] ?>">
+                                <input type="hidden" name="anchor" value="kegiatan">
+                                <button class="link-button danger" type="submit">Hapus</button>
+                            </form>
+                        </div>
+                    </article>
+                    <?php endforeach; ?>
                 </div>
-            </section>
+            </div>
+        </section>
 
-            <section id="kegiatan" class="admin-section">
-                <div class="section-title">
-                    <p class="eyebrow">Kegiatan dan sertifikat</p>
-                    <h2>Kegiatan</h2>
-                </div>
-                <div class="admin-grid">
-                    <form method="post" class="admin-form panel">
-                        <input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>">
-                        <input type="hidden" name="action" value="save_certificate">
-                        <input type="hidden" name="id" value="<?= $certificateEdit['id'] ?? 0 ?>">
-                        <input type="hidden" name="anchor" value="kegiatan">
-                        <h3><?= $certificateEdit ? 'Edit kegiatan' : 'Tambah kegiatan' ?></h3>
-                        <label>
-                            Judul
-                            <input name="judul" value="<?= e($certificateEdit['judul'] ?? '') ?>" required>
-                        </label>
-                        <label>
-                            Penerbit / organisasi
-                            <input name="penerbit" value="<?= e($certificateEdit['penerbit'] ?? '') ?>" required>
-                        </label>
-                        <label>
-                            Periode
-                            <input name="periode" value="<?= e($certificateEdit['periode'] ?? '') ?>" required>
-                        </label>
-                        <label>
-                            Path gambar
-                            <input
-                                name="image_file"
-                                placeholder="certificates/nama.svg"
-                                value="<?= e($certificateEdit['image_file'] ?? '') ?>"
-                                required
-                            >
-                        </label>
-                        <label>
-                            Urutan
-                            <input type="number" name="sort_order" min="0" value="<?= e($certificateEdit['sort_order'] ?? 0) ?>" required>
-                        </label>
-                        <label>
-                            Deskripsi
-                            <textarea name="deskripsi" rows="4" required><?= e($certificateEdit['deskripsi'] ?? '') ?></textarea>
-                        </label>
-                        <div class="form-actions">
-                            <button class="button button-primary" type="submit">Simpan</button>
-                            <?php if ($certificateEdit): ?>
-                                <a class="button button-secondary" href="admin.php#kegiatan">Batal</a>
-                            <?php endif; ?>
-                        </div>
-                    </form>
-                    <div class="record-list">
-                        <?php foreach ($certificates as $item): ?>
-                            <article class="record">
-                                <div>
-                                    <strong><?= e($item['judul']) ?></strong>
-                                    <span><?= e($item['penerbit']) ?> · <?= e($item['periode']) ?></span>
-                                </div>
-                                <div class="record-actions">
-                                    <a href="admin.php?edit=certificate:<?= $item['id'] ?>#kegiatan">Edit</a>
-                                    <form method="post" onsubmit="return confirm('Hapus kegiatan ini?')">
-                                        <input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>">
-                                        <input type="hidden" name="action" value="delete_certificate">
-                                        <input type="hidden" name="id" value="<?= $item['id'] ?>">
-                                        <input type="hidden" name="anchor" value="kegiatan">
-                                        <button class="link-button danger" type="submit">Hapus</button>
-                                    </form>
-                                </div>
-                            </article>
-                        <?php endforeach; ?>
+        <section id="perangkat" class="admin-section">
+            <div class="section-title">
+                <p class="eyebrow">Perangkat kerja</p>
+                <h2>Grup dan perangkat</h2>
+            </div>
+            <div class="admin-grid">
+                <form method="post" class="admin-form panel">
+                    <input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>">
+                    <input type="hidden" name="action" value="save_group">
+                    <input type="hidden" name="id" value="<?= $groupEdit['id'] ?? 0 ?>">
+                    <input type="hidden" name="anchor" value="perangkat">
+                    <h3><?= $groupEdit ? 'Edit grup' : 'Tambah grup' ?></h3>
+                    <label>
+                        Nomor
+                        <input name="number" value="<?= e($groupEdit['number'] ?? '') ?>" required>
+                    </label>
+                    <label>
+                        Judul grup
+                        <input name="judul" value="<?= e($groupEdit['judul'] ?? '') ?>" required>
+                    </label>
+                    <label>
+                        Urutan
+                        <input type="number" name="sort_order" min="0" value="<?= e($groupEdit['sort_order'] ?? 0) ?>"
+                            required>
+                    </label>
+                    <div class="form-actions">
+                        <button class="button button-primary" type="submit">Simpan grup</button>
+                        <?php if ($groupEdit): ?>
+                        <a class="button button-secondary" href="admin.php#perangkat">Batal</a>
+                        <?php endif; ?>
                     </div>
+                </form>
+                <div class="record-list">
+                    <?php foreach ($groups as $item): ?>
+                    <article class="record">
+                        <div>
+                            <strong><?= e($item['number']) ?> · <?= e($item['judul']) ?></strong>
+                            <span>Grup perangkat</span>
+                        </div>
+                        <div class="record-actions">
+                            <a href="admin.php?edit=group:<?= $item['id'] ?>#perangkat">Edit</a>
+                            <form method="post"
+                                onsubmit="return confirm('Hapus grup dan semua perangkat di dalamnya?')">
+                                <input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>">
+                                <input type="hidden" name="action" value="delete_group">
+                                <input type="hidden" name="id" value="<?= $item['id'] ?>">
+                                <input type="hidden" name="anchor" value="perangkat">
+                                <button class="link-button danger" type="submit">Hapus</button>
+                            </form>
+                        </div>
+                    </article>
+                    <?php endforeach; ?>
                 </div>
-            </section>
+            </div>
+            <div class="admin-grid">
+                <form method="post" class="admin-form panel">
+                    <input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>">
+                    <input type="hidden" name="action" value="save_skill">
+                    <input type="hidden" name="id" value="<?= $skillEdit['id'] ?? 0 ?>">
+                    <input type="hidden" name="anchor" value="perangkat">
+                    <h3><?= $skillEdit ? 'Edit perangkat' : 'Tambah perangkat' ?></h3>
+                    <label>
+                        Grup
+                        <select name="group_id" required>
+                            <option value="">Pilih grup</option>
+                            <?php foreach ($groups as $group): ?>
+                            <option value="<?= $group['id'] ?>"
+                                <?= (string) ($skillEdit['group_id'] ?? '') === (string) $group['id'] ? 'selected' : '' ?>>
+                                <?= e($group['number'] . ' · ' . $group['judul']) ?>
+                            </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </label>
+                    <label>
+                        Nama perangkat
+                        <input name="name" value="<?= e($skillEdit['name'] ?? '') ?>" required>
+                    </label>
+                    <label>
+                        Path logo
+                        <input name="logo_file" placeholder="tech-logos/logo.svg"
+                            value="<?= e($skillEdit['logo_file'] ?? '') ?>" required>
+                    </label>
+                    <label>
+                        Urutan
+                        <input type="number" name="sort_order" min="0" value="<?= e($skillEdit['sort_order'] ?? 0) ?>"
+                            required>
+                    </label>
+                    <div class="form-actions">
+                        <button class="button button-primary" type="submit">Simpan perangkat</button>
+                        <?php if ($skillEdit): ?>
+                        <a class="button button-secondary" href="admin.php#perangkat">Batal</a>
+                        <?php endif; ?>
+                    </div>
+                </form>
+                <div class="record-list">
+                    <?php foreach ($skills as $item): ?>
+                    <article class="record">
+                        <div>
+                            <strong><?= e($item['name']) ?></strong>
+                            <span><?= e($item['group_title']) ?></span>
+                        </div>
+                        <div class="record-actions">
+                            <a href="admin.php?edit=skill:<?= $item['id'] ?>#perangkat">Edit</a>
+                            <form method="post" onsubmit="return confirm('Hapus perangkat ini?')">
+                                <input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>">
+                                <input type="hidden" name="action" value="delete_skill">
+                                <input type="hidden" name="id" value="<?= $item['id'] ?>">
+                                <input type="hidden" name="anchor" value="perangkat">
+                                <button class="link-button danger" type="submit">Hapus</button>
+                            </form>
+                        </div>
+                    </article>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        </section>
 
-            <section id="perangkat" class="admin-section">
-                <div class="section-title">
-                    <p class="eyebrow">Perangkat kerja</p>
-                    <h2>Grup dan perangkat</h2>
-                </div>
-                <div class="admin-grid">
-                    <form method="post" class="admin-form panel">
-                        <input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>">
-                        <input type="hidden" name="action" value="save_group">
-                        <input type="hidden" name="id" value="<?= $groupEdit['id'] ?? 0 ?>">
-                        <input type="hidden" name="anchor" value="perangkat">
-                        <h3><?= $groupEdit ? 'Edit grup' : 'Tambah grup' ?></h3>
-                        <label>
-                            Nomor
-                            <input name="number" value="<?= e($groupEdit['number'] ?? '') ?>" required>
-                        </label>
-                        <label>
-                            Judul grup
-                            <input name="judul" value="<?= e($groupEdit['judul'] ?? '') ?>" required>
-                        </label>
-                        <label>
-                            Urutan
-                            <input type="number" name="sort_order" min="0" value="<?= e($groupEdit['sort_order'] ?? 0) ?>" required>
-                        </label>
-                        <div class="form-actions">
-                            <button class="button button-primary" type="submit">Simpan grup</button>
-                            <?php if ($groupEdit): ?>
-                                <a class="button button-secondary" href="admin.php#perangkat">Batal</a>
-                            <?php endif; ?>
-                        </div>
-                    </form>
-                    <div class="record-list">
-                        <?php foreach ($groups as $item): ?>
-                            <article class="record">
-                                <div>
-                                    <strong><?= e($item['number']) ?> · <?= e($item['judul']) ?></strong>
-                                    <span>Grup perangkat</span>
-                                </div>
-                                <div class="record-actions">
-                                    <a href="admin.php?edit=group:<?= $item['id'] ?>#perangkat">Edit</a>
-                                    <form method="post" onsubmit="return confirm('Hapus grup dan semua perangkat di dalamnya?')">
-                                        <input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>">
-                                        <input type="hidden" name="action" value="delete_group">
-                                        <input type="hidden" name="id" value="<?= $item['id'] ?>">
-                                        <input type="hidden" name="anchor" value="perangkat">
-                                        <button class="link-button danger" type="submit">Hapus</button>
-                                    </form>
-                                </div>
-                            </article>
-                        <?php endforeach; ?>
+        <section id="peminatan" class="admin-section">
+            <div class="section-title">
+                <p class="eyebrow">Bidang peminatan</p>
+                <h2>Peminatan</h2>
+            </div>
+            <div class="admin-grid">
+                <form method="post" class="admin-form panel">
+                    <input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>">
+                    <input type="hidden" name="action" value="save_interest">
+                    <input type="hidden" name="id" value="<?= $interestEdit['id'] ?? 0 ?>">
+                    <input type="hidden" name="anchor" value="peminatan">
+                    <h3><?= $interestEdit ? 'Edit peminatan' : 'Tambah peminatan' ?></h3>
+                    <label>
+                        Judul
+                        <input name="judul" value="<?= e($interestEdit['judul'] ?? '') ?>" required>
+                    </label>
+                    <label>
+                        Deskripsi
+                        <textarea name="deskripsi" rows="4"
+                            required><?= e($interestEdit['deskripsi'] ?? '') ?></textarea>
+                    </label>
+                    <label>
+                        Ikon
+                        <input name="ikon" value="<?= e($interestEdit['ikon'] ?? '') ?>" placeholder="code-block"
+                            required>
+                    </label>
+                    <label>
+                        Urutan
+                        <input type="number" name="sort_order" min="0"
+                            value="<?= e($interestEdit['sort_order'] ?? 0) ?>" required>
+                    </label>
+                    <div class="form-actions">
+                        <button class="button button-primary" type="submit">Simpan peminatan</button>
+                        <?php if ($interestEdit): ?>
+                        <a class="button button-secondary" href="admin.php#peminatan">Batal</a>
+                        <?php endif; ?>
                     </div>
-                </div>
-                <div class="admin-grid">
-                    <form method="post" class="admin-form panel">
-                        <input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>">
-                        <input type="hidden" name="action" value="save_skill">
-                        <input type="hidden" name="id" value="<?= $skillEdit['id'] ?? 0 ?>">
-                        <input type="hidden" name="anchor" value="perangkat">
-                        <h3><?= $skillEdit ? 'Edit perangkat' : 'Tambah perangkat' ?></h3>
-                        <label>
-                            Grup
-                            <select name="group_id" required>
-                                <option value="">Pilih grup</option>
-                                <?php foreach ($groups as $group): ?>
-                                    <option
-                                        value="<?= $group['id'] ?>"
-                                        <?= (string) ($skillEdit['group_id'] ?? '') === (string) $group['id'] ? 'selected' : '' ?>
-                                    >
-                                        <?= e($group['number'] . ' · ' . $group['judul']) ?>
-                                    </option>
-                                <?php endforeach; ?>
-                            </select>
-                        </label>
-                        <label>
-                            Nama perangkat
-                            <input name="name" value="<?= e($skillEdit['name'] ?? '') ?>" required>
-                        </label>
-                        <label>
-                            Path logo
-                            <input
-                                name="logo_file"
-                                placeholder="tech-logos/logo.svg"
-                                value="<?= e($skillEdit['logo_file'] ?? '') ?>"
-                                required
-                            >
-                        </label>
-                        <label>
-                            Urutan
-                            <input type="number" name="sort_order" min="0" value="<?= e($skillEdit['sort_order'] ?? 0) ?>" required>
-                        </label>
-                        <div class="form-actions">
-                            <button class="button button-primary" type="submit">Simpan perangkat</button>
-                            <?php if ($skillEdit): ?>
-                                <a class="button button-secondary" href="admin.php#perangkat">Batal</a>
-                            <?php endif; ?>
+                </form>
+                <div class="record-list">
+                    <?php foreach ($interests as $item): ?>
+                    <article class="record">
+                        <div>
+                            <strong><?= e($item['judul']) ?></strong>
+                            <span><?= e($item['ikon']) ?> · urutan <?= e((string) $item['sort_order']) ?></span>
                         </div>
-                    </form>
-                    <div class="record-list">
-                        <?php foreach ($skills as $item): ?>
-                            <article class="record">
-                                <div>
-                                    <strong><?= e($item['name']) ?></strong>
-                                    <span><?= e($item['group_title']) ?></span>
-                                </div>
-                                <div class="record-actions">
-                                    <a href="admin.php?edit=skill:<?= $item['id'] ?>#perangkat">Edit</a>
-                                    <form method="post" onsubmit="return confirm('Hapus perangkat ini?')">
-                                        <input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>">
-                                        <input type="hidden" name="action" value="delete_skill">
-                                        <input type="hidden" name="id" value="<?= $item['id'] ?>">
-                                        <input type="hidden" name="anchor" value="perangkat">
-                                        <button class="link-button danger" type="submit">Hapus</button>
-                                    </form>
-                                </div>
-                            </article>
-                        <?php endforeach; ?>
-                    </div>
+                        <div class="record-actions">
+                            <a href="admin.php?edit=interest:<?= $item['id'] ?>#peminatan">Edit</a>
+                            <form method="post" onsubmit="return confirm('Hapus bidang peminatan ini?')">
+                                <input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>">
+                                <input type="hidden" name="action" value="delete_interest">
+                                <input type="hidden" name="id" value="<?= $item['id'] ?>">
+                                <input type="hidden" name="anchor" value="peminatan">
+                                <button class="link-button danger" type="submit">Hapus</button>
+                            </form>
+                        </div>
+                    </article>
+                    <?php endforeach; ?>
                 </div>
-            </section>
+            </div>
+        </section>
+    </main>
+    <script src="assets/js/main.js"></script>
+</body>
 
-            <section id="peminatan" class="admin-section">
-                <div class="section-title">
-                    <p class="eyebrow">Bidang peminatan</p>
-                    <h2>Peminatan</h2>
-                </div>
-                <div class="admin-grid">
-                    <form method="post" class="admin-form panel">
-                        <input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>">
-                        <input type="hidden" name="action" value="save_interest">
-                        <input type="hidden" name="id" value="<?= $interestEdit['id'] ?? 0 ?>">
-                        <input type="hidden" name="anchor" value="peminatan">
-                        <h3><?= $interestEdit ? 'Edit peminatan' : 'Tambah peminatan' ?></h3>
-                        <label>
-                            Judul
-                            <input name="judul" value="<?= e($interestEdit['judul'] ?? '') ?>" required>
-                        </label>
-                        <label>
-                            Deskripsi
-                            <textarea name="deskripsi" rows="4" required><?= e($interestEdit['deskripsi'] ?? '') ?></textarea>
-                        </label>
-                        <label>
-                            Ikon
-                            <input name="ikon" value="<?= e($interestEdit['ikon'] ?? '') ?>" placeholder="code-block" required>
-                        </label>
-                        <label>
-                            Urutan
-                            <input type="number" name="sort_order" min="0" value="<?= e($interestEdit['sort_order'] ?? 0) ?>" required>
-                        </label>
-                        <div class="form-actions">
-                            <button class="button button-primary" type="submit">Simpan peminatan</button>
-                            <?php if ($interestEdit): ?>
-                                <a class="button button-secondary" href="admin.php#peminatan">Batal</a>
-                            <?php endif; ?>
-                        </div>
-                    </form>
-                    <div class="record-list">
-                        <?php foreach ($interests as $item): ?>
-                            <article class="record">
-                                <div>
-                                    <strong><?= e($item['judul']) ?></strong>
-                                    <span><?= e($item['ikon']) ?> · urutan <?= e((string) $item['sort_order']) ?></span>
-                                </div>
-                                <div class="record-actions">
-                                    <a href="admin.php?edit=interest:<?= $item['id'] ?>#peminatan">Edit</a>
-                                    <form method="post" onsubmit="return confirm('Hapus bidang peminatan ini?')">
-                                        <input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>">
-                                        <input type="hidden" name="action" value="delete_interest">
-                                        <input type="hidden" name="id" value="<?= $item['id'] ?>">
-                                        <input type="hidden" name="anchor" value="peminatan">
-                                        <button class="link-button danger" type="submit">Hapus</button>
-                                    </form>
-                                </div>
-                            </article>
-                        <?php endforeach; ?>
-                    </div>
-                </div>
-            </section>
-        </main>
-        <script src="assets/js/main.js"></script>
-    </body>
 </html>
