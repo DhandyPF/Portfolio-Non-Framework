@@ -20,9 +20,6 @@ try {
 }
 
 $profile = $data['profile'];
-$flash = get_flash();
-$contactForm = $_SESSION['contact_form'] ?? [];
-unset($_SESSION['contact_form']);
 $contactEmail = filter_var((string) ($profile['email'] ?? ''), FILTER_VALIDATE_EMAIL) ?: '';
 
 // Daftar navigasi dibuat dari array agar tautan mudah ditambah atau diubah.
@@ -60,6 +57,38 @@ $projects = [
         'repository' => 'metafor-2026',
         'description' => 'Contoh website profil kelompok sederhana untuk kegiatan Metafor 2026.',
         'stack' => ['HTML', 'Website profil'],
+    ],
+];
+
+// Tautan sosial media utama pada bagian kontak.
+$socialLinks = [
+    [
+        'platform' => 'Instagram',
+        'handle' => '@dhandyputra.f',
+        'description' => 'DM atau lihat aktivitas terbaru.',
+        'url' => 'https://instagram.com/dhandyputra.f',
+        'icon' => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>',
+    ],
+    [
+        'platform' => 'Discord',
+        'handle' => 'moisdurdane',
+        'description' => 'Diskusi cepat atau kolaborasi teknis.',
+        'url' => 'https://discord.com/users/moisdurdane',
+        'icon' => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8.5 14.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Zm7 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"/><path d="M5.5 6.5A16 16 0 0 1 9 5.5l.6 1.2a12 12 0 0 1 4.8 0L15 5.5a16 16 0 0 1 3.5 1c1.8 2.8 2.3 5.6 2 8.5a15 15 0 0 1-4.5 2.5l-.9-1.4a9.5 9.5 0 0 1-6.2 0L8 17.5A15 15 0 0 1 3.5 15c-.3-2.9.2-5.7 2-8.5Z"/></svg>',
+    ],
+    [
+        'platform' => 'WhatsApp',
+        'handle' => '+62 8xx-xxxx-xxxx',
+        'description' => 'Chat langsung untuk komunikasi cepat.',
+        'url' => 'https://wa.me/628xxxxxxxxxx',
+        'icon' => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21l1.65-3.8a9 9 0 1 1 3.4 2.9L3 21Z"/><path d="M9 10a.5.5 0 0 0 1 0V9a.5.5 0 0 0-1 0v1a5 5 0 0 0 5 5h1a.5.5 0 0 0 0-1h-1a.5.5 0 0 0 0 1"/></svg>',
+    ],
+    [
+        'platform' => 'Telegram',
+        'handle' => '@username_telegram',
+        'description' => 'Kirim pesan langsung melalui Telegram.',
+        'url' => 'https://t.me/username_telegram',
+        'icon' => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.5 3.5-19 7.5 6.5 2.5 9-6-6.5 7.5 5 4 4.5-15.5Z"/></svg>',
     ],
 ];
 ?>
@@ -381,7 +410,7 @@ $projects = [
                 <div class="reveal">
                     <p class="eyebrow">Mari terhubung</p>
                     <h2>Ada gagasan yang perlu dibangun?</h2>
-                    <p class="contact-copy">Kirim pesan melalui formulir ini. Pesan akan tersimpan dan bisa saya tindak lanjuti melalui email.</p>
+                    <p class="contact-copy">Hubungi saya langsung melalui salah satu akun sosial media di bawah ini untuk diskusi proyek, kolaborasi, atau sekadar menyapa.</p>
                     <p class="email-note">
                         <span>EMAIL</span>
                         <?php if ($contactEmail): ?>
@@ -391,28 +420,18 @@ $projects = [
                         <?php endif; ?>
                     </p>
                 </div>
-                <div class="reveal reveal-delay-1">
-                    <?php if ($flash): ?>
-                    <p class="alert <?= e($flash['type'] ?? '') ?>" role="<?= ($flash['type'] ?? '') === 'error' ? 'alert' : 'status' ?>">
-                        <?= e($flash['message'] ?? '') ?>
-                    </p>
-                    <?php endif; ?>
-                    <form class="contact-form" method="post" action="contact.php">
-                        <input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>">
-                        <label for="contact-name">Nama</label>
-                        <input id="contact-name" name="name" autocomplete="name" maxlength="150" required
-                            value="<?= e($contactForm['name'] ?? '') ?>">
-                        <label for="contact-email">Email</label>
-                        <input id="contact-email" type="email" name="email" autocomplete="email" maxlength="190"
-                            required value="<?= e($contactForm['email'] ?? '') ?>">
-                        <label for="contact-subject">Subjek</label>
-                        <input id="contact-subject" name="subject" maxlength="190" required
-                            value="<?= e($contactForm['subject'] ?? '') ?>">
-                        <label for="contact-message">Pesan</label>
-                        <textarea id="contact-message" name="message" rows="5" maxlength="5000"
-                            required><?= e($contactForm['message'] ?? '') ?></textarea>
-                        <button class="button button-primary" type="submit">Kirim pesan</button>
-                    </form>
+                <div class="social-grid reveal reveal-delay-1">
+                    <?php foreach ($socialLinks as $social): ?>
+                    <a class="social-card" href="<?= e($social['url']) ?>" target="_blank" rel="noopener noreferrer">
+                        <div class="social-card-top">
+                            <span class="social-icon"><?= $social['icon'] ?></span>
+                            <span class="social-arrow" aria-hidden="true">↗</span>
+                        </div>
+                        <h3 class="social-platform"><?= e($social['platform']) ?></h3>
+                        <p class="social-handle"><?= e($social['handle']) ?></p>
+                        <p class="social-desc"><?= e($social['description']) ?></p>
+                    </a>
+                    <?php endforeach; ?>
                 </div>
             </div>
         </section>
