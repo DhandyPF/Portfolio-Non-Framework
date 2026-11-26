@@ -259,11 +259,40 @@ if (!$isLoggedIn) {
         <head>
             <meta charset="utf-8">
             <meta name="viewport" content="width=device-width, initial-scale=1">
+            <meta name="color-scheme" content="light dark">
+            <script>
+                try {
+                    const storedTheme = localStorage.getItem("color-scheme");
+                    const colorSchemeMeta = document.querySelector('meta[name="color-scheme"]');
+                    if (storedTheme === "light" || storedTheme === "dark") {
+                        document.documentElement.dataset.theme = storedTheme;
+                        colorSchemeMeta.content = storedTheme;
+                    }
+                } catch (error) {
+                    // Gunakan preferensi sistem jika penyimpanan browser tidak tersedia.
+                }
+            </script>
             <title>Login Admin | Portfolio</title>
+            <link rel="stylesheet" href="assets/css/style.css">
             <link rel="stylesheet" href="assets/css/admin.css">
         </head>
         <body class="admin-page admin-login-page">
-            <main class="login-card">
+            <a class="skip-link" href="#konten-utama">Lewati ke konten utama</a>
+            <header class="site-header admin-header">
+                <div class="page-shell nav-shell admin-nav-shell">
+                    <div class="brand-actions">
+                        <a class="brand" href="index.php" aria-label="Kembali ke portfolio">
+                            <span class="brand-mark">D.</span>
+                            <span>DHANDY</span>
+                        </a>
+                        <button class="theme-toggle" type="button" aria-label="Aktifkan mode gelap">
+                            Mode gelap
+                        </button>
+                    </div>
+                    <a class="button button-secondary" href="index.php">Lihat portfolio</a>
+                </div>
+            </header>
+            <main id="konten-utama" class="login-card">
                 <p class="eyebrow">DHANDY / ADMIN</p>
                 <h1>Kelola portfolio.</h1>
                 <p class="muted">Masuk untuk mengelola konten situs tanpa mengubah kode sumber.</p>
@@ -284,6 +313,7 @@ if (!$isLoggedIn) {
                 </form>
                 <a class="back-link" href="index.php">← Kembali ke portfolio</a>
             </main>
+            <script src="assets/js/main.js"></script>
         </body>
     </html>
     <?php
@@ -327,27 +357,53 @@ $interestEdit = $editType === 'interest' ? $find($interests, $editId) : [];
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="color-scheme" content="light dark">
+        <script>
+            try {
+                const storedTheme = localStorage.getItem("color-scheme");
+                const colorSchemeMeta = document.querySelector('meta[name="color-scheme"]');
+                if (storedTheme === "light" || storedTheme === "dark") {
+                    document.documentElement.dataset.theme = storedTheme;
+                    colorSchemeMeta.content = storedTheme;
+                }
+            } catch (error) {
+                // Gunakan preferensi sistem jika penyimpanan browser tidak tersedia.
+            }
+        </script>
         <title>Dashboard Admin | Portfolio</title>
+        <link rel="stylesheet" href="assets/css/style.css">
         <link rel="stylesheet" href="assets/css/admin.css">
     </head>
     <body class="admin-page">
-        <header class="admin-header">
-            <div>
-                <p class="eyebrow">DHANDY / ADMIN</p>
-                <h1>Dashboard konten</h1>
-            </div>
-            <div class="header-actions">
-                <a class="button button-secondary" href="index.php">Lihat portfolio</a>
-                <a class="button button-secondary" href="admin.php?action=logout">Keluar</a>
+        <a class="skip-link" href="#konten-utama">Lewati ke konten utama</a>
+        <header class="site-header admin-header">
+            <div class="page-shell nav-shell admin-nav-shell">
+                <div class="brand-actions">
+                    <a class="brand" href="index.php" aria-label="Kembali ke portfolio">
+                        <span class="brand-mark">D.</span>
+                        <span>DHANDY</span>
+                    </a>
+                    <button class="theme-toggle" type="button" aria-label="Aktifkan mode gelap">
+                        Mode gelap
+                    </button>
+                </div>
+                <div class="header-actions">
+                    <a class="button button-secondary" href="index.php">Lihat portfolio</a>
+                    <a class="button button-secondary" href="admin.php?action=logout">Keluar</a>
+                </div>
             </div>
         </header>
-        <main class="admin-container">
+        <main id="konten-utama" class="admin-container">
+            <section class="admin-intro">
+                <p class="eyebrow">DHANDY / RUANG KERJA</p>
+                <h1>Dashboard konten.</h1>
+                <p class="intro-text">Kelola lima bagian utama portfolio. Kolom path gambar mengacu pada folder <code>assets/images</code>.</p>
+            </section>
             <?php if ($flash): ?>
                 <p class="alert <?= e($flash['type']) ?>" role="status">
                     <?= e($flash['message']) ?>
                 </p>
             <?php endif; ?>
-            <p class="intro-text">Kelola lima bagian utama portfolio. Kolom path gambar mengacu pada folder <code>assets/images</code>.</p>
 
             <section id="tentang" class="admin-section">
                 <div class="section-title">
@@ -701,5 +757,6 @@ $interestEdit = $editType === 'interest' ? $find($interests, $editId) : [];
                 </div>
             </section>
         </main>
+        <script src="assets/js/main.js"></script>
     </body>
 </html>
